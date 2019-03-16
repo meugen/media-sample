@@ -35,20 +35,21 @@ public class PlayerBindingImpl extends BaseBindingImpl<PlayerState>
 
     @Override
     public void initializePlayer() {
-        player = ExoPlayerFactory.newSimpleInstance(
-                context,
-                new DefaultRenderersFactory(context),
-                new DefaultTrackSelector(),
-                new DefaultLoadControl());
+        if (player == null) {
+            player = ExoPlayerFactory.newSimpleInstance(
+                    context,
+                    new DefaultRenderersFactory(context),
+                    new DefaultTrackSelector(),
+                    new DefaultLoadControl());
+            player.setPlayWhenReady(playWhenReady);
+            player.seekTo(currentWindowIndex, currentPosition);
 
+            Uri uri = Uri.parse(context.getString(R.string.media_url_mp4));
+            MediaSource mediaSource = buildMediaSource(uri);
+            player.prepare(mediaSource, false, false);
+        }
         PlayerView playerView = get(R.id.video_view);
         playerView.setPlayer(player);
-        player.setPlayWhenReady(playWhenReady);
-        player.seekTo(currentWindowIndex, currentPosition);
-
-        Uri uri = Uri.parse(context.getString(R.string.media_url_mp4));
-        MediaSource mediaSource = buildMediaSource(uri);
-        player.prepare(mediaSource, false, false);
     }
 
     private MediaSource buildMediaSource(Uri uri) {
@@ -75,9 +76,6 @@ public class PlayerBindingImpl extends BaseBindingImpl<PlayerState>
     @Override
     public void releasePlayer() {
          if (player != null) {
-             currentPosition = player.getCurrentPosition();
-             currentWindowIndex = player.getCurrentWindowIndex();
-             playWhenReady = player.getPlayWhenReady();
              player.release();
              player = null;
          }
@@ -85,6 +83,9 @@ public class PlayerBindingImpl extends BaseBindingImpl<PlayerState>
 
     @Override
     public void saveState(PlayerState state) {
+        currentPosition = player.getCurrentPosition();
+        currentWindowIndex = player.getCurrentWindowIndex();
+        playWhenReady = player.getPlayWhenReady();
         state.setCurrentPosition(currentPosition);
         state.setCurrentWindowIndex(currentWindowIndex);
         state.setPlayWhenReady(playWhenReady);

@@ -25,6 +25,7 @@ android {
 dependencies {
     implementation "androidx.appcompat:appcompat:${versions.androidx.appcompat}"
     implementation "androidx.constraintlayout:constraintlayout:${versions.androidx.constraintlayout}"
+    implementation "androidx.lifecycle:lifecycle-process:${versions.androidx.lifecycle}"
 
     implementation "com.google.android.exoplayer:exoplayer-core:${versions.exoplayer}"
     implementation "com.google.android.exoplayer:exoplayer-dash:${versions.exoplayer}"

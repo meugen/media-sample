@@ -17,18 +17,17 @@ public abstract class BaseFragment<S extends State, B extends Binding<S>> extend
     protected B binding;
     protected S state;
 
-    @Override
-    public void onAttach(Context context) {
-        inject(MediaApp.provideAppComponent(context));
-        super.onAttach(context);
-    }
+    private boolean injected = false;
 
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        state.attachBundle(savedInstanceState);
-        binding.restoreState(state);
-        state.detachBundle();
+    public void onAttach(Context context) {
+        if (!injected) {
+            // If setRetainInstance(boolean) was called with true argument for
+            // this fragment, than it can be already injected
+            inject(MediaApp.provideAppComponent(context));
+            injected = true;
+        }
+        super.onAttach(context);
     }
 
     @Override
@@ -45,6 +44,10 @@ public abstract class BaseFragment<S extends State, B extends Binding<S>> extend
             @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         binding.attachView(view);
+
+        state.attachBundle(savedInstanceState);
+        binding.restoreState(state);
+        state.detachBundle();
     }
 
     @Override

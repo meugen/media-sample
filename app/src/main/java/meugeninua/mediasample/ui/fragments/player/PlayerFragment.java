@@ -8,6 +8,11 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.lifecycle.OnLifecycleEvent;
+import androidx.lifecycle.ProcessLifecycleOwner;
 import meugeninua.mediasample.R;
 import meugeninua.mediasample.app.di.AppComponent;
 import meugeninua.mediasample.ui.fragments.base.BaseFragment;
@@ -16,7 +21,22 @@ import meugeninua.mediasample.ui.fragments.player.binding.PlayerBindingImpl;
 import meugeninua.mediasample.ui.fragments.player.state.PlayerState;
 import meugeninua.mediasample.ui.fragments.player.state.PlayerStateImpl;
 
-public class PlayerFragment extends BaseFragment<PlayerState, PlayerBinding> {
+public class PlayerFragment extends BaseFragment<PlayerState, PlayerBinding>
+        implements LifecycleObserver {
+
+    @Override
+    public void onCreate(@Nullable final Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setRetainInstance(true);
+        ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        ProcessLifecycleOwner.get().getLifecycle().removeObserver(this);
+        binding.releasePlayer();
+        super.onDestroy();
+    }
 
     @Nullable
     @Override
@@ -45,20 +65,9 @@ public class PlayerFragment extends BaseFragment<PlayerState, PlayerBinding> {
         }
     }
 
-    @Override
-    public void onPause() {
-        super.onPause();
-        if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
-            binding.releasePlayer();
-        }
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M) {
-            binding.releasePlayer();
-        }
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    public void onProcessStop() {
+        binding.releasePlayer();
     }
 
     @Override
