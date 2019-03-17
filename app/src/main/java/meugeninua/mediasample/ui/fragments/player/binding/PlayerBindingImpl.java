@@ -2,6 +2,7 @@ package meugeninua.mediasample.ui.fragments.player.binding;
 
 import android.content.Context;
 import android.net.Uri;
+import android.util.Log;
 import android.view.View;
 
 import com.google.android.exoplayer2.DefaultLoadControl;
@@ -86,6 +87,7 @@ public class PlayerBindingImpl extends BaseBindingImpl<PlayerState>
         currentPosition = player.getCurrentPosition();
         currentWindowIndex = player.getCurrentWindowIndex();
         playWhenReady = player.getPlayWhenReady();
+        Log.d("PlayerBindingImpl", "currentPosition=" + currentPosition + ", currentWindowIndex=" + currentWindowIndex + ", playWhenReady=" + playWhenReady);
         state.setCurrentPosition(currentPosition);
         state.setCurrentWindowIndex(currentWindowIndex);
         state.setPlayWhenReady(playWhenReady);

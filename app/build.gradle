@@ -9,6 +9,8 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField 'String', 'URL', '"http://192.168.0.102:8888/"'
     }
     buildTypes {
         release {
@@ -25,7 +27,11 @@ android {
 dependencies {
     implementation "androidx.appcompat:appcompat:${versions.androidx.appcompat}"
     implementation "androidx.constraintlayout:constraintlayout:${versions.androidx.constraintlayout}"
-    implementation "androidx.lifecycle:lifecycle-process:${versions.androidx.lifecycle}"
+    implementation "androidx.lifecycle:lifecycle-extensions:${versions.androidx.lifecycle}"
+    implementation "androidx.recyclerview:recyclerview:${versions.androidx.recyclerview}"
+
+    implementation "com.squareup.retrofit2:retrofit:${versions.retrofit}"
+    implementation "com.squareup.retrofit2:converter-gson:${versions.retrofit}"
 
     implementation "com.google.android.exoplayer:exoplayer-core:${versions.exoplayer}"
     implementation "com.google.android.exoplayer:exoplayer-dash:${versions.exoplayer}"

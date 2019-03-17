@@ -59,7 +59,7 @@ public class PlayerFragment extends BaseFragment<PlayerState, PlayerBinding>
     @Override
     public void onResume() {
         super.onResume();
-        binding.hideSystemUi();
+//        binding.hideSystemUi();
         if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M || !binding.isPlayerInitialized()) {
             binding.initializePlayer();
         }
@@ -71,7 +71,7 @@ public class PlayerFragment extends BaseFragment<PlayerState, PlayerBinding>
     }
 
     @Override
-    protected void inject(AppComponent component) {
+    public void inject(AppComponent component) {
         binding = new PlayerBindingImpl(getContext());
         state = new PlayerStateImpl();
     }

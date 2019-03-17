@@ -14,12 +14,20 @@
         android:name=".app.MediaApp"
         android:networkSecurityConfig="@xml/network_security_config">
 
-        <activity android:name=".ui.activities.player.PlayerActivity">
+        <activity android:name=".ui.activities.playlist.PlaylistActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity android:name=".ui.activities.player.PlayerActivity">
+            <!--<intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>-->
         </activity>
     </application>
 
