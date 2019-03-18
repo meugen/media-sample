@@ -26,7 +26,6 @@ public class MediaMapperImpl implements EntityMapper<MediaEntity> {
     @Override
     public ContentValues entityToValues(final MediaEntity entity) {
         ContentValues values = new ContentValues();
-        values.put(FLD_ID, entity.id);
         values.put(FLD_NAME, entity.name);
         values.put(FLD_DESCRIPTION, entity.description);
         values.put(FLD_URL, entity.url);

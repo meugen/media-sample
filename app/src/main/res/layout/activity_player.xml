@@ -5,12 +5,5 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.activities.player.PlayerActivity"
-    android:background="@android:color/black">
-
-    <fragment
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:name="meugeninua.mediasample.ui.fragments.player.PlayerFragment"
-        android:id="@+id/player"/>
-
-</FrameLayout>
+    android:background="@android:color/black"
+    android:id="@+id/container"/>

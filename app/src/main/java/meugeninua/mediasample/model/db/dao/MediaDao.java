@@ -8,5 +8,7 @@ public interface MediaDao {
 
     List<MediaEntity> getAll();
 
+    int deleteAll();
+
     void insert(MediaEntity entity);
 }

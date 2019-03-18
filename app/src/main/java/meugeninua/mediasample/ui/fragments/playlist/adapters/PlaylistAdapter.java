@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import meugeninua.mediasample.R;
 import meugeninua.mediasample.model.db.entities.MediaEntity;
 
-public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.PlayitemHolder> {
+public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.PlaylistItemHolder> {
 
     private final LayoutInflater inflater;
     private List<MediaEntity> entities;
@@ -31,13 +31,13 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playit
 
     @NonNull
     @Override
-    public PlayitemHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
+    public PlaylistItemHolder onCreateViewHolder(@NonNull final ViewGroup parent, final int viewType) {
         View view = inflater.inflate(R.layout.play_item, parent, false);
-        return new PlayitemHolder(view);
+        return new PlaylistItemHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final PlayitemHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final PlaylistItemHolder holder, final int position) {
         holder.bind(entities.get(position));
     }
 
@@ -46,12 +46,12 @@ public class PlaylistAdapter extends RecyclerView.Adapter<PlaylistAdapter.Playit
         return entities.size();
     }
 
-    static class PlayitemHolder extends RecyclerView.ViewHolder {
+    static class PlaylistItemHolder extends RecyclerView.ViewHolder {
 
         private final TextView nameView;
         private final TextView descriptionView;
 
-        PlayitemHolder(@NonNull final View itemView) {
+        PlaylistItemHolder(@NonNull final View itemView) {
             super(itemView);
             nameView = itemView.findViewById(R.id.entity_name);
             descriptionView = itemView.findViewById(R.id.entity_description);

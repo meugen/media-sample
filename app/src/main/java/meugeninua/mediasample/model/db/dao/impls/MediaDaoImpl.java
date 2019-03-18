@@ -44,4 +44,9 @@ public class MediaDaoImpl implements MediaDao {
     public void insert(final MediaEntity entity) {
         db.insertOrThrow("medias", null, mapper.entityToValues(entity));
     }
+
+    @Override
+    public int deleteAll() {
+        return db.delete("medias", null, null);
+    }
 }

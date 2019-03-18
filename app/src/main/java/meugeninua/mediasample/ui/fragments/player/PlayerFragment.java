@@ -24,6 +24,17 @@ import meugeninua.mediasample.ui.fragments.player.state.PlayerStateImpl;
 public class PlayerFragment extends BaseFragment<PlayerState, PlayerBinding>
         implements LifecycleObserver {
 
+    private static final String ARG_POSITION = "position";
+
+    public static PlayerFragment build(final int position) {
+        Bundle args = new Bundle();
+        args.putInt(ARG_POSITION, position);
+
+        PlayerFragment fragment = new PlayerFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
+
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

@@ -1,5 +1,6 @@
 package meugeninua.mediasample.ui.fragments.playlist.viewmodel;
 
+import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
 import java.io.IOException;
@@ -12,19 +13,22 @@ import meugeninua.mediasample.model.db.entities.MediaEntity;
 import meugeninua.mediasample.model.network.MediaService;
 import retrofit2.Response;
 
-public class LoadPlaylistRunnable implements Runnable {
+class LoadPlaylistRunnable implements Runnable {
 
     private static final String TAG = LoadPlaylistRunnable.class.getSimpleName();
 
     private final WeakReference<MutableLiveData<List<MediaEntity>>> liveDataRef;
 
+    private final SQLiteDatabase database;
     private final MediaDao mediaDao;
     private final MediaService mediaService;
 
-    public LoadPlaylistRunnable(
+    LoadPlaylistRunnable(
             final MutableLiveData<List<MediaEntity>> liveData,
+            final SQLiteDatabase database,
             final MediaDao mediaDao, final MediaService mediaService) {
         this.liveDataRef = new WeakReference<>(liveData);
+        this.database = database;
         this.mediaDao = mediaDao;
         this.mediaService = mediaService;
     }
@@ -39,13 +43,25 @@ public class LoadPlaylistRunnable implements Runnable {
             Response<List<MediaEntity>> response = mediaService.getMediaContent().execute();
             if (response.isSuccessful()) {
                 entities = response.body();
-                for (MediaEntity entity : entities) {
-                    mediaDao.insert(entity);
-                }
+                storeToDatabase(entities);
                 postToLiveData(entities);
             }
         } catch (Exception e) {
             Log.e(TAG, e.getMessage(), e);
+        }
+    }
+
+    private void storeToDatabase(final List<MediaEntity> entities) {
+        try {
+            database.beginTransaction();
+
+            mediaDao.deleteAll();
+            for (MediaEntity entity : entities) {
+                mediaDao.insert(entity);
+            }
+            database.setTransactionSuccessful();
+        } finally {
+            database.endTransaction();
         }
     }
 

@@ -1,5 +1,7 @@
 package meugeninua.mediasample.ui.fragments.playlist.viewmodel;
 
+import android.database.sqlite.SQLiteDatabase;
+
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
@@ -17,6 +19,7 @@ public class PlaylistViewModel extends ViewModel implements Injectable {
     private MutableLiveData<List<MediaEntity>> liveData;
 
     private ExecutorService executorService;
+    private SQLiteDatabase database;
     private MediaDao mediaDao;
     private MediaService mediaService;
 
@@ -29,12 +32,14 @@ public class PlaylistViewModel extends ViewModel implements Injectable {
     }
 
     private void loadMediaEntities() {
-        executorService.execute(new LoadPlaylistRunnable(liveData, mediaDao, mediaService));
+        executorService.execute(new LoadPlaylistRunnable(liveData,
+                database, mediaDao, mediaService));
     }
 
     @Override
     public void inject(final AppComponent appComponent) {
         this.executorService = appComponent.provideExecutorService();
+        this.database = appComponent.provideDatabase();
         this.mediaDao = appComponent.provideMediaDao();
         this.mediaService = appComponent.provideMediaService();
     }
